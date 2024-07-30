@@ -1,24 +1,24 @@
-﻿using Customer.Application.Dtos;
-using Customer.Application.IServices;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Product.Application.Dtos;
+using Product.Application.IServices;
 
-namespace Customer.Api.Controllers
+namespace Product.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly ICustomerServices _services;
+        private readonly IProductServices _services;
 
-        public CustomerController(ICustomerServices services)
+        public ProductController(IProductServices productServices)
         {
-            _services = services;
+            _services = productServices;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddProduct([FromBody] CustomerDto customerDto)
+        public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
         {
-            var response = await _services.Add(customerDto);
+            var response = await _services.Add(productDto);
             return Ok(response);
         }
 
@@ -37,21 +37,21 @@ namespace Customer.Api.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateProduct([FromBody] CustomerDto customerDto, int id)
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductDto productDto, int id)
         {
             var record = await _services.GetById(id);
 
             if (record is null)
                 return Ok("Não é possível autalizar, registro não existe!");
 
-            var response = await _services.Update(customerDto, id);
+            var response = await _services.Update(productDto, id);
             return Ok(response);
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteProduct(int idCustomer)
+        public async Task<IActionResult> DeleteProduct(int idProduct)
         {
-            var response = await _services.Delete(idCustomer);
+            var response = await _services.Delete(idProduct);
             return Ok(response);
         }
     }
