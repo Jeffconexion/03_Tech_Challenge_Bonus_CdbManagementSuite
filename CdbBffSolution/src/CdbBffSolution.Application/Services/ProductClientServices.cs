@@ -18,10 +18,10 @@ namespace CdbBffSolution.Application.Services
         {
             var productClient = new ProductClient
             {
-                ClientId = productClientDto.ClientId,
-                ProductId = productClientDto.ProductId,
+                Client = new Client { Id = productClientDto.Customer.Id },              
                 PurchaseValue = productClientDto.PurchaseValue,
-                PurchaseDate = productClientDto.PurchaseDate
+                PurchaseDate = productClientDto.PurchaseDate.Date,
+                Product = new Product { Id = productClientDto.Product.Id }                
             };
 
             var response = await _productClientRepository.Add(productClient);
@@ -50,9 +50,8 @@ namespace CdbBffSolution.Application.Services
         {
             var record = await _productClientRepository.GetById(id);
             if (record is not null)
-            {
-                record.ProductId = productClientDto.ProductId;
-                record.ClientId = productClientDto.ClientId;
+            {                
+              
                 record.PurchaseDate = productClientDto.PurchaseDate;
                 record.PurchaseValue = productClientDto.PurchaseValue;
 

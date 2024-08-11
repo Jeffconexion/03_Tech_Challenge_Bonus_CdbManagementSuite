@@ -16,28 +16,28 @@ namespace Customer.Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddProduct([FromBody] CustomerDto customerDto)
+        public async Task<IActionResult> AddCustomer([FromBody] CustomerDto customerDto)
         {
             var response = await _services.Add(customerDto);
             return Ok(response);
         }
 
         [HttpGet("list")]
-        public async Task<IActionResult> GetProduct()
+        public async Task<IActionResult> GetCustomer()
         {
             var response = await _services.GetAll();
             return Ok(response);
         }
 
         [HttpGet("list-by-filter")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetCustomerById(int id)
         {
             var response = await _services.GetById(id);
             return Ok(response);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateProduct([FromBody] CustomerDto customerDto, int id)
+        public async Task<IActionResult> UpdateCustomer([FromBody] CustomerDto customerDto, int id)
         {
             var record = await _services.GetById(id);
 
@@ -49,7 +49,7 @@ namespace Customer.Api.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteProduct(int idCustomer)
+        public async Task<IActionResult> DeleteCustomer(int idCustomer)
         {
             var response = await _services.Delete(idCustomer);
             return Ok(response);

@@ -20,7 +20,17 @@ namespace CdbBffSolution.Infrastructure.Repository
                                VALUES
                                (@ProductId, @ClientId, @PurchaseDate, @PurchaseValue)";
 
-            await _dbConnection.ExecuteAsync(comandoSql, productClient);
+
+            var parameters = new
+            {
+                ProductId = productClient.Product.Id,
+                ClientId = productClient.Client.Id,
+                PurchaseDate = productClient.PurchaseDate,
+                PurchaseValue = productClient.PurchaseValue
+            };
+
+
+            await _dbConnection.ExecuteAsync(comandoSql, parameters);
             return productClient;
         }
 
@@ -34,19 +44,49 @@ namespace CdbBffSolution.Infrastructure.Repository
 
         public async Task<List<ProductClient>> GetAll()
         {
-            var comandoSql = @"SELECT pc.Id, pc.ProductId, p.Name, pc.ClientId, c.FirstName, pc.PurchaseDate, pc.PurchaseValue
-                                FROM ProductClient pc
-                                JOIN Product p ON pc.ProductId = p.Id
-                                JOIN Client c ON pc.ClientId = c.Id";
+            var comandoSql = @"SELECT pc.Id, pc.ProductId, p.Name, p.Description, p.Value, p.ExpirationDate, p.InterestRate, p.IsActive,
+                              pc.ClientId, c.FirstName, c.LastName, c.Email, c.BirthDate, c.IsActive AS ClientIsActive,
+                              pc.PurchaseDate, pc.PurchaseValue
+                       FROM ProductClient pc
+                       JOIN Product p ON pc.ProductId = p.Id
+                       JOIN Client c ON pc.ClientId = c.Id";
 
+            var productClients = await _dbConnection.QueryAsync<ProductClient, Product, Client, ProductClient>(
+                comandoSql,
+                (productClient, product, client) =>
+                {
+                    productClient.Product = product;
+                    productClient.Client = client;
+                    return productClient;
+                },
+                splitOn: "ProductId,ClientId"
+            );
 
-            return _dbConnection.QueryAsync<ProductClient>(comandoSql).Result.ToList();
+            return productClients.ToList();
         }
 
         public async Task<ProductClient> GetById(int id)
         {
-            var comandoSql = @"SELECT * FROM ProductClient WHERE Id = @Id";
-            var response = await _dbConnection.QueryAsync<ProductClient>(comandoSql, new { id = id });
+            var comandoSql = @"SELECT pc.Id, pc.ProductId, p.Name, p.Description, p.Value, p.ExpirationDate, p.InterestRate, p.IsActive,
+                              pc.ClientId, c.FirstName, c.LastName, c.Email, c.BirthDate, c.IsActive AS ClientIsActive,
+                              pc.PurchaseDate, pc.PurchaseValue
+                       FROM ProductClient pc
+                       JOIN Product p ON pc.ProductId = p.Id
+                       JOIN Client c ON pc.ClientId = c.Id
+                       WHERE pc.Id = @Id";
+
+            var response = await _dbConnection.QueryAsync<ProductClient, Product, Client, ProductClient>(
+                comandoSql,
+                (productClient, product, client) =>
+                {
+                    productClient.Product = product;
+                    productClient.Client = client;
+                    return productClient;
+                },
+                new { Id = id },
+                splitOn: "ProductId,ClientId"
+            );
+
             return response.SingleOrDefault();
         }
 

@@ -16,28 +16,28 @@ namespace CdbBffSolution.Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductClientDto productClientDto)
+        public async Task<IActionResult> AddCustomerProduct([FromBody] ProductClientDto productClientDto)
         {
             var response = await _services.Add(productClientDto);
             return Ok(response);
         }
 
         [HttpGet("list")]
-        public async Task<IActionResult> GetProduct()
+        public async Task<IActionResult> GetCustomerProduct()
         {
             var response = await _services.GetAll();
             return Ok(response);
         }
 
         [HttpGet("list-by-filter")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetCustomerProductById(int id)
         {
             var response = await _services.GetById(id);
             return Ok(response);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductClientDto productClientDto, int id)
+        public async Task<IActionResult> UpdateCustomerProduct([FromBody] ProductClientDto productClientDto, int id)
         {
             var record = await _services.GetById(id);
 
@@ -49,7 +49,7 @@ namespace CdbBffSolution.Api.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteProduct(int idCustomer)
+        public async Task<IActionResult> DeleteCustomerProduct(int idCustomer)
         {
             var response = await _services.Delete(idCustomer);
             return Ok(response);
