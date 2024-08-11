@@ -8,15 +8,15 @@ namespace CdbBffSolution.Api.Controllers
     [ApiController]
     public class CdbBffController : ControllerBase
     {
-        private readonly IProductClientServices _services;
+        private readonly IProductCustomerServices _services;
 
-        public CdbBffController(IProductClientServices services)
+        public CdbBffController(IProductCustomerServices services)
         {
             _services = services;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddCustomerProduct([FromBody] ProductClientDto productClientDto)
+        public async Task<IActionResult> AddCustomerProduct([FromBody] ProductCustomerDto productClientDto)
         {
             var response = await _services.Add(productClientDto);
             return Ok(response);
@@ -37,7 +37,7 @@ namespace CdbBffSolution.Api.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateCustomerProduct([FromBody] ProductClientDto productClientDto, int id)
+        public async Task<IActionResult> UpdateCustomerProduct([FromBody] ProductCustomerDto productClientDto, int id)
         {
             var record = await _services.GetById(id);
 

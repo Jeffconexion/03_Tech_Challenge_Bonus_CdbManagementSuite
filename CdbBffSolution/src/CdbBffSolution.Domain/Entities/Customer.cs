@@ -1,6 +1,6 @@
 ﻿namespace CdbBffSolution.Domain.Entities
 {
-    public class Client
+    public class Customer
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

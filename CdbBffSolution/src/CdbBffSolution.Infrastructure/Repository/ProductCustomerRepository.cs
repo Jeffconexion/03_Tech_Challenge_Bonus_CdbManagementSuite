@@ -5,16 +5,16 @@ using System.Data;
 
 namespace CdbBffSolution.Infrastructure.Repository
 {
-    public class ProductClientRepository : IProductClientRepository
+    public class ProductCustomerRepository : IProductCustomerRepository
     {
         private readonly IDbConnection _dbConnection;
 
-        public ProductClientRepository(IDbConnection dbConnection)
+        public ProductCustomerRepository(IDbConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }
 
-        public async Task<ProductClient> Add(ProductClient productClient)
+        public async Task<ProductCustomer> Add(ProductCustomer productClient)
         {
             var comandoSql = @"INSERT INTO ProductClient (ProductId, ClientId, PurchaseDate, PurchaseValue)
                                VALUES
@@ -24,7 +24,7 @@ namespace CdbBffSolution.Infrastructure.Repository
             var parameters = new
             {
                 ProductId = productClient.Product.Id,
-                ClientId = productClient.Client.Id,
+                ClientId = productClient.Customer.Id,
                 PurchaseDate = productClient.PurchaseDate,
                 PurchaseValue = productClient.PurchaseValue
             };
@@ -42,7 +42,7 @@ namespace CdbBffSolution.Infrastructure.Repository
             return id;
         }
 
-        public async Task<List<ProductClient>> GetAll()
+        public async Task<List<ProductCustomer>> GetAll()
         {
             var comandoSql = @"SELECT pc.Id, pc.ProductId, p.Name, p.Description, p.Value, p.ExpirationDate, p.InterestRate, p.IsActive,
                               pc.ClientId, c.FirstName, c.LastName, c.Email, c.BirthDate, c.IsActive AS ClientIsActive,
@@ -51,12 +51,12 @@ namespace CdbBffSolution.Infrastructure.Repository
                        JOIN Product p ON pc.ProductId = p.Id
                        JOIN Client c ON pc.ClientId = c.Id";
 
-            var productClients = await _dbConnection.QueryAsync<ProductClient, Product, Client, ProductClient>(
+            var productClients = await _dbConnection.QueryAsync<ProductCustomer, ProductEntity, Customer, ProductCustomer>(
                 comandoSql,
                 (productClient, product, client) =>
                 {
                     productClient.Product = product;
-                    productClient.Client = client;
+                    productClient.Customer = client;
                     return productClient;
                 },
                 splitOn: "ProductId,ClientId"
@@ -65,7 +65,7 @@ namespace CdbBffSolution.Infrastructure.Repository
             return productClients.ToList();
         }
 
-        public async Task<ProductClient> GetById(int id)
+        public async Task<ProductCustomer> GetById(int id)
         {
             var comandoSql = @"SELECT pc.Id, pc.ProductId, p.Name, p.Description, p.Value, p.ExpirationDate, p.InterestRate, p.IsActive,
                               pc.ClientId, c.FirstName, c.LastName, c.Email, c.BirthDate, c.IsActive AS ClientIsActive,
@@ -75,12 +75,12 @@ namespace CdbBffSolution.Infrastructure.Repository
                        JOIN Client c ON pc.ClientId = c.Id
                        WHERE pc.Id = @Id";
 
-            var response = await _dbConnection.QueryAsync<ProductClient, Product, Client, ProductClient>(
+            var response = await _dbConnection.QueryAsync<ProductCustomer, ProductEntity, Customer, ProductCustomer>(
                 comandoSql,
                 (productClient, product, client) =>
                 {
                     productClient.Product = product;
-                    productClient.Client = client;
+                    productClient.Customer = client;
                     return productClient;
                 },
                 new { Id = id },
@@ -90,7 +90,7 @@ namespace CdbBffSolution.Infrastructure.Repository
             return response.SingleOrDefault();
         }
 
-        public async Task<ProductClient> Update(ProductClient productClient)
+        public async Task<ProductCustomer> Update(ProductCustomer productClient)
         {
             var comandoSql = @"UPDATE ProductClient
                    SET ProductId = @ProductId,

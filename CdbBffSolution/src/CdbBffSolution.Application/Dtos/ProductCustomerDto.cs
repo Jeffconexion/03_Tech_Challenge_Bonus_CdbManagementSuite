@@ -1,6 +1,6 @@
 ﻿namespace CdbBffSolution.Application.Dtos
 {
-    public class ProductClientDto
+    public class ProductCustomerDto
     {
         public ProductDto Product { get; set; }
         public CustomerDto Customer { get; set; }
