@@ -36,7 +36,7 @@ namespace Customer.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut("update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCustomer([FromBody] CustomerDto customerDto, int id)
         {
             var record = await _services.GetById(id);

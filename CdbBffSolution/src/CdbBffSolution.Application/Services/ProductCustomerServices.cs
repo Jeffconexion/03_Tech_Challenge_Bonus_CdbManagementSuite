@@ -5,6 +5,12 @@ using CdbBffSolution.Domain.IRepository;
 
 namespace CdbBffSolution.Application.Services
 {
+    // Este serviço (`ProductCustomerServices`) realiza chamadas HTTP para obter dados de produtos e clientes
+    // utilizando a biblioteca Refit. O Refit simplifica a criação de clientes HTTP ao gerar implementações baseadas
+    // em interfaces, permitindo que escrevamos chamadas de API como métodos de interface.
+    //
+    // No `ProductCustomerServices`, injetamos essa interface e utilizamos seus métodos para fazer as requisições.
+    // Isso facilita a manutenção e organização do código, garantindo uma separação clara das responsabilidades.
     public class ProductCustomerServices : IProductCustomerServices
     {
         private readonly IProductCustomerRepository _productCustomerRepository;

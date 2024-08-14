@@ -30,6 +30,7 @@ builder.Services.AddTransient<IDbConnection>((conexao) => new SqlConnection(stri
 builder.Services.AddTransient<IProductCustomerServices, ProductCustomerServices>();
 builder.Services.AddTransient<IProductCustomerRepository, ProductCustomerRepository>();
 builder.Services.AddTransient<IExternalProductServices, ExternalProductServices>();
+builder.Services.AddTransient<IExternalCustomerServices, ExternalCustomerServices>();
 
 var app = builder.Build();
 

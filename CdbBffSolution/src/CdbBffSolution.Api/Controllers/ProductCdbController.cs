@@ -20,5 +20,6 @@ namespace CdbBffSolution.Api.Controllers
             var response = await _services.GetAllAsync();
             return Ok(response);
         }
+        //CONTINUAR COM AS CHAMADAS PARA OS DEMAIS ENDPOINTS EXTERNOS...
     }
 }
